@@ -1,0 +1,248 @@
+BASIC
+
+1、example
+
+array.array = ndarray
+
+reshape
+
+shape
+
+ndim :the number of axes (dimensions) of the array.
+
+a.dtype.name :the type of the elements in the array.
+
+a.itemsize :one of type complex32 has itemsize 4 (=32/8)
+
+a.size
+
+2、ndarray creation
+
+a = np.array([2,3,4])
+
+b = np.array([1.2,3.5,4.1])
+
+c = np.array([[1,2],[3,4]], dtype=complex)
+
+np.zeros((3,4))
+
+e = np.ones((2,3,4),dtype=np.int16)
+
+np.empty((2,3))
+
+np.linspace(0,2,9)# 9 numbers from 0 to 2
+
+See also
+
+array, zeros, zeros_like, ones, ones_like, empty, empty_like, arange, linspace, numpy.random.Generator.rand, numpy.random.Generator.randn, fromfunction, fromfile
+
+3、printing array
+
+a = np.arange(6)
+print(a)
+
+b = np.arange(12).reshape(4,3)
+print(b)
+
+print(np.arange(10000))
+print(np.arange(10000).reshape(100,100))
+
+4、basic operation
+
+one dim: +-*/ ** sin() logic
+
+two dim: + * - @/dot()
+
+composited operation:+= *=  #modify an existing array
+
+upcasting
+
+unary operations,such as:sum,min,max...
+
+5、universal functions :familiar mathematical functions such as sin, cos, and exp
+
+6、Indexing,Slicing and Itering
+
+one dim Indexing,Slicing
+
+Multidimensional array Indexing,Slicing,they have one index per axis
+
+choic axis ndarray[1,...]
+
+print(b.flat)#Itering  
+<numpy.flatiter object at 0x000001FED99D65B0>
+
+See also：Indexing on ndarrays, Indexing routines (reference), newaxis, ndenumerate, indices
+https://numpy.org/doc/stable/user/basics.indexing.html#basics-indexing
+https://numpy.org/doc/stable/reference/arrays.indexing.html#arrays-indexing
+
+
+
+Shape Manipulation
+
+1、changing the shape of an array
+
+a.reshape(),a.raval(),a.floor(),a.resize(),a.reshape(3,-1)
+
+2、a,b stacking together along different axes
+
+2-dim
+np.vstack((a,b))
+np.hstack((a,b))
+
+1-dim
+np.column_stack((a,b)) = np.column_stack((a[:,newaxies], b[:,newaxis]))
+np.row_stack((a,b)) = np.vstack((a,b)) = np.concatenate((a,b), axis=0)
+
+3、Splitting one array into several smaller ones
+np.hsplit(a,(split option1,split option2))
+
+
+
+Copy and views
+
+1、 shallow copy :no copy of objects or their data 
+
+b = a->b is a
+
+b=a/b = a.view() is shallow copy
+
+b changes data while a change, but b change size while a not.  
+
+2、deep copy : b = a.copy()
+
+3、useful numpy function 
+
+Array Creation:
+arange, array, copy, empty, empty_like, eye, fromfile, fromfunction, identity, linspace, logspace, mgrid, ogrid, ones, ones_like, r_, zeros, zeros_like
+
+Conversions
+ndarray.astype, atleast_1d, atleast_2d, atleast_3d, mat
+
+Manipulations
+array_split, column_stack, concatenate, diagonal, dsplit, dstack, hsplit, hstack, ndarray.item, newaxis, ravel, repeat, reshape, resize, squeeze, swapaxes, take, transpose, vsplit, vstack
+
+Questions
+all, any, nonzero, where
+
+Ordering
+argmax, argmin, argsort, max, min, ptp, searchsorted, sort
+
+Operations
+choose, compress, cumprod, cumsum, inner, ndarray.fill, imag, prod, put, putmask, real, sum
+
+Basic Statistics
+cov, mean, std, var
+
+Basic Linear Algebra
+cross, dot, outer, linalg.svd, vdot
+
+
+
+Broadcasting rules:https://numpy.org/doc/stable/user/basics.broadcasting.html#basics-broadcasting
+
+    1、if all inpput arrays do not have same dimensions , a"1" will be repeatedly prepended to shape of the samller arrays until all the arrays have the same number of dimensions.
+    
+    ？2、The second rule of broadcasting ensures that arrays with a size of 1 along a particular dimension act as if they had the size of the array with the largest shape along that dimension. The value of the array element is assumed to be the same along that dimension for the “broadcast” array.
+    
+    
+    
+
+Advanced indexing and index tricks
+
+
+1 、Indexing with Arrays of Indices
+
+（1）one dimension
+
+a = np.arange(12)**2
+
+i = np.array([1,1,3,8,5]) #print(a[i]) [ 1  1  9 64 25]
+
+（2）two dimension
+
+a = np.arange(12).reshape(3,4)
+
+i = np.array([[0,1],[1,2]])
+
+j = np.array([[2,1],[3,3]])
+
+print(a[i,j]) # [[ 2  5] [ 7 11]]
+
+（3) search of the maximum value
+
+values = data.max(axis=0)
+
+indices = data.argmax(axis=0)
+
+(4) use indexing with arrays as a target 
+
+2、Indexing with boolean arrays
+
+(1)we explicity choose which items in the array we wangt and which one's we don't through 'a[a>4]'
+
+(2)for each dimension of array we give a 1D boolean array selectiong the slices we want: 'a[True, False, True, False]'
+Note that the length of the 1D boolean array must coincide with the length of the dimension (or axis) you want to slice. 
+
+3、The ix_() function
+
+the ix_ function can be used to combine different vectors so as to obtain the result for each n-uplet.
+
+a = np.array([2, 3, 4, 5])
+b = np.array([8, 5, 4])
+c = np.array([5, 4, 6, 8, 3])
+
+ax, bx, cx = np.ix_(a, b, c)
+
+ax.shape, bx.shape, cx.shape
+#((4, 1, 1), (1, 3, 1), (1, 1, 5))
+
+4、Indexing with strings
+https://numpy.org/doc/stable/user/basics.rec.html#structured-arrays
+
+
+
+Useful tricks and tips
+
+1、"Automatric" Reshaping b = a.reshape((2, -1, 3))
+
+2 vector stacking vstack([x,y])&xy2 = np.concatenate((x,y),axis=1) limit
+
+？3、Histograms
+    
+
+Further reading
+
+The Python tutorial https://docs.python.org/tutorial/
+
+NumPy Reference https://numpy.org/doc/stable/reference/index.html#reference
+
+SciPy Tutorial https://docs.scipy.org/doc/scipy/reference/tutorial/index.html
+
+SciPy Lecture Notes https://scipy-lectures.org/
+
+A matlab, R, IDL, NumPy/SciPy dictionary http://mathesaurus.sf.net/
+ 
+tutorial-svd https://numpy.org/numpy-tutorials/content/tutorial-svd.html
+
+
+
+
+NumPy: the absolute basics for beginners
+https://numpy.org/doc/stable/user/absolute_beginners.html#
+ 
+1、np.sort(arr)
+#array([1, 2, 3, 4, 5, 6, 7, 8])
+
+In addition to sort, which returns a sorted copy of an array, you can use:
+
+argsort, which is an indirect sort along a specified axis,
+
+lexsort, which is an indirect stable sort on multiple keys,
+
+searchsorted, which will find elements in a sorted array, and
+
+partition, which is a partial sort.
+
+To read more about sorting an array, see: https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort
+
